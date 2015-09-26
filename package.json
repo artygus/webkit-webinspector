@@ -1,0 +1,23 @@
+{
+  "name": "webkit-webinspector",
+  "version": "0.0.1",
+  "description": "Standalone Webkit WebInspector frontend extracted from Webkit sources",
+  "main": "",
+  "dependencies": {
+    "babel": "^5.8.23"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artygus/webkit-webinspector.git"
+  },
+  "author": "artygus",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/artygus/webkit-webinspector/issues"
+  },
+  "homepage": "https://github.com/artygus/webkit-webinspector#readme"
+}

@@ -28,6 +28,56 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src *; connect-src *; media-src *; font-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'">
 
+    <script>
+      if (!Array.prototype.includes) {
+        Array.prototype.includes = function(searchElement /*, fromIndex*/ ) {
+          'use strict';
+          var O = Object(this);
+          var len = parseInt(O.length) || 0;
+          if (len === 0) {
+            return false;
+          }
+          var n = parseInt(arguments[1]) || 0;
+          var k;
+          if (n >= 0) {
+            k = n;
+          } else {
+            k = len + n;
+            if (k < 0) {k = 0;}
+          }
+          var currentElement;
+          while (k < len) {
+            currentElement = O[k];
+            if (searchElement === currentElement ||
+                (searchElement !== searchElement && currentElement !== currentElement)) {
+              return true;
+            }
+            k++;
+          }
+          return false;
+        };
+      }
+
+      function appendPolyfill() {
+        for (var i = 0; i < arguments.length; i++) {
+          var arg = arguments[i];
+          if (arg instanceof Node) {
+            this.appendChild(arg);
+          } else {
+            var node = document.createTextNode(arg);
+            this.appendChild(node);
+          }
+        }
+      }
+      if (!Element.prototype.append) {
+        Element.prototype.append = appendPolyfill;
+      }
+
+      if (!DocumentFragment.prototype.append) {
+        DocumentFragment.prototype.append = appendPolyfill;
+      }
+    </script>
+
     <link rel="stylesheet" href="External/CodeMirror/codemirror.css">
 
     <link rel="stylesheet" href="Views/ApplicationCacheFrameContentView.css">

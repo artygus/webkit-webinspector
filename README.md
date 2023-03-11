@@ -6,15 +6,13 @@ Standalone Webkit WebInspector frontend extracted from Webkit [sources](https://
 ## Usage
 To debug iOS devices you need to have [ios-webkit-debug-proxy](https://github.com/google/ios-webkit-debug-proxy) installed and running.
 
-To start static server, run
+To start WebInspectorUI run
 
-    ./server.js
+```bash
+yarn start
+```
     
-or
-
-    node server.js
-
-By default server will start on 8080, you can change server port providing the command-line argument, e.g. `./server.js 8000`. Press CTRL+C to quit.
+By default server will start on 8080, you can change server port providing the command-line argument, e.g. `yarn start 8000`. Press CTRL+C to quit.
 
 Navigate to `http://localhost:8080/Main.html?ws=localhost:9222/devtools/page/1`. `ws=...` part can be taken from `http://localhost:9222`, "frontend" page of ios-webkit-debug-proxy tool.
 

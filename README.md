@@ -1,5 +1,6 @@
 # webkit-webinspector
-Standalone Webkit WebInspector frontend extracted from Webkit [sources](http://trac.webkit.org/browser/trunk/Source/WebInspectorUI). I use it as part of my project [devtools-compat-proxy](https://github.com/artygus/devtools-compat-proxy), a tool intended to provide compatibility between devtools protocols.
+
+Standalone Webkit WebInspector frontend extracted from Webkit [sources](https://github.com/WebKit/WebKit/tree/main/Source/WebInspectorUI/UserInterface).
 
 
 ## Usage
@@ -15,17 +16,7 @@ or
 
 By default server will start on 8080, you can change server port providing the command-line argument, e.g. `./server.js 8000`. Press CTRL+C to quit.
 
-You can switch between versions using `vX` argument, allowed values are v7, v8, latest (default value).
-
-    ./server v7
-
-Now just navigate to `http://localhost:8080/Main.html?ws=localhost:9222/devtools/page/1`. `ws=...` part can be taken from `http://localhost:9222`, "frontend" page of ios-webkit-debug-proxy tool.
-
-To debug older iOS devices with the latest inspector you may need to link another InspectorBackendCommands.js file, e.g.
-
-    ln -f lib/WebInspectorUI/latest/Protocol/Legacy/8.0/InspectorBackendCommands.js lib/WebInspectorUI/latest/Protocol/
-
-but I recommend switching to older version.
+Navigate to `http://localhost:8080/Main.html?ws=localhost:9222/devtools/page/1`. `ws=...` part can be taken from `http://localhost:9222`, "frontend" page of ios-webkit-debug-proxy tool.
 
 ## Update
 

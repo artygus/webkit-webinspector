@@ -30,9 +30,3 @@ Copy WebInspectorUI to serve dir
 ```bash
 cp -R tmp/webkit/Source/WebInspectorUI/UserInterface lib/WebInspectorUI/latest
 ```
-
-Link inspector latest commands file
-
-```bash
-cp lib/WebInspectorUI/latest/Protocol/Legacy/iOS/15.4/InspectorBackendCommands.js lib/WebInspectorUI/latest/Protocol/InspectorBackendCommands.js
-```

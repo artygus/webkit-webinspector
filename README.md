@@ -1,6 +1,6 @@
 # webkit-webinspector
 
-Standalone Webkit WebInspector frontend extracted from Webkit [sources](https://github.com/WebKit/WebKit/tree/main/Source/WebInspectorUI/UserInterface).
+Standalone Webkit WebInspector frontend extracted from Webkit [sources](https://github.com/WebKit/WebKit/tree/main/Source/WebInspectorUI/UserInterface). This is a merely experimental project for local debugging needs, if you're looking for a more user-friendly soultion checkout the [ios-safari-remote-debug-kit](https://github.com/HimbeersaftLP/ios-safari-remote-debug-kit) project.
 
 
 ## Usage

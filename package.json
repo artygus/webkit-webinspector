@@ -4,7 +4,6 @@
   "description": "Standalone Webkit WebInspector frontend extracted from Webkit sources",
   "main": "server.js",
   "dependencies": {
-    "babel": "^5.8.23",
     "connect": "^3.4.0",
     "serve-static": "^1.10.0"
   },

@@ -30,33 +30,16 @@
     right: 0;
 }
 
+.sidebar > .panel.probes > .navigation-bar .item.clear-samples {
+    position: relative;
+    top: 1px;
+}
+
 .sidebar > .panel.probes > .content {
     position: absolute;
     top: 23px;
     bottom: 0px;
     display: block;
-}
-
-.details-section.probe-set .options > :matches(.probe-remove, .probe-clear-samples, .probe-add) {
-    float: right;
-    height: 11px;
-    margin-top: 1px;
-    margin-left: 5px;
-}
-
-.details-section.probe-set .options > .probe-clear-samples {
-    content: url(../Images/NavigationItemTrash.svg);
-    height: 14px;
-    margin-top: -1px;
-}
-
-.details-section.probe-set .options > .probe-remove {
-    content: url(../Images/CloseLarge.svg);
-}
-
-.details-section.probe-set .options > .probe-add {
-    content: url(../Images/Plus13.svg);
-    height: 13px;
 }
 
 .details-section.probe-set .options > input {

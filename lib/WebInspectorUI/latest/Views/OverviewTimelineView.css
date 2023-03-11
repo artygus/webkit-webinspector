@@ -23,30 +23,24 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.timeline-view.overview > .timeline-ruler {
+.timeline-view.overview > .data-grid th.graph-column > .timeline-ruler {
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
     bottom: 0;
 }
 
-.timeline-view.overview > .timeline-ruler > .header {
-    border-top: 1px solid hsl(0, 0%, 70%);
-    height: 23px;
+.timeline-view.overview > .data-grid th.graph-column > .timeline-ruler > .header {
+    border: none;
+    height: 22px;
 }
 
-body.window-inactive .timeline-view.overview > .timeline-ruler > .header {
-    border-top-color: hsl(0, 0%, 85%);
-}
-
-.timeline-view.overview > .timeline-ruler > .event-markers {
-    top: 23px;
+.timeline-view.overview > .data-grid th.graph-column > .timeline-ruler > .event-markers {
+    top: 22px;
 }
 
 .timeline-view.overview > .data-grid {
     position: absolute;
-    top: 23px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
@@ -65,12 +59,21 @@ body.window-inactive .timeline-view.overview > .timeline-ruler > .header {
     top: 2px;
 }
 
+.timeline-view.overview > .data-grid tr {
+    --timeline-record-bar-box-shadow-color: var(--odd-zebra-stripe-row-background-color);
+    --timeline-record-bar-selected-inactive-box-shadow-color: var(--selected-background-color-unfocused);
+}
+
+.timeline-view.overview > .data-grid tr:nth-child(even) {
+    --timeline-record-bar-box-shadow-color: var(--even-zebra-stripe-row-background-color);
+}
+
 .timeline-view.overview > .data-grid tr.parent:not(.expanded) td.graph-column .timeline-record-bar:not(.has-inactive-segment) > .segment {
-    box-shadow: white 0 0 0 1px;
+    box-shadow: var(--timeline-record-bar-box-shadow-color) 0 0 0 1px;
 }
 
 .timeline-view.overview > .data-grid tr.parent:not(.expanded).selected td.graph-column .timeline-record-bar:not(.has-inactive-segment) > .segment {
-    box-shadow: hsl(0, 0%, 83%) 0 0 0 1px;
+    box-shadow: var(--timeline-record-bar-selected-inactive-box-shadow-color) 0 0 0 1px;
 }
 
 .timeline-view.overview > .data-grid:focus tr.parent:not(.expanded).selected td.graph-column .timeline-record-bar:not(.has-inactive-segment) > .segment {
@@ -78,13 +81,23 @@ body.window-inactive .timeline-view.overview > .timeline-ruler > .header {
 }
 
 .timeline-view.overview > .data-grid tr.parent:not(.expanded) td.graph-column .timeline-record-bar.has-inactive-segment > .segment:not(.inactive) {
-    box-shadow: white 1px 0 0;
+    box-shadow: var(--timeline-record-bar-box-shadow-color) 1px 0 0;
 }
 
 .timeline-view.overview > .data-grid tr.parent:not(.expanded).selected td.graph-column .timeline-record-bar.has-inactive-segment > .segment:not(.inactive) {
-    box-shadow: hsl(0, 0%, 83%) 1px 0 0;
+    box-shadow: var(--timeline-record-bar-selected-inactive-box-shadow-color) 1px 0 0;
 }
 
 .timeline-view.overview > .data-grid:focus tr.parent:not(.expanded).selected td.graph-column .timeline-record-bar.has-inactive-segment > .segment:not(.inactive) {
     box-shadow: hsl(215, 67%, 53%) 1px 0 0;
+}
+
+@media (prefers-color-scheme: dark) {
+    .timeline-view.overview > .data-grid tr {
+        --timeline-record-bar-selected-inactive-box-shadow-color: hsl(0, 0%, 35%);
+    }
+
+    .timeline-view.overview > .data-grid tr:nth-child(even) {
+        --timeline-record-bar-selected-inactive-box-shadow-color: hsl(0, 0%, 38%);
+    }
 }

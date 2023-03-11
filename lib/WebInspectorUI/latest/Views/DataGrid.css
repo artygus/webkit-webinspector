@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Apple Inc. All rights reserved.
+ * Copyright (C) 2013-2020 Apple Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -26,6 +26,10 @@
 .data-grid {
     position: relative;
     outline: none;
+
+    --data-grid-header-horizontal-padding: 6px;
+    --data-grid-header-height: 22px;
+    --data-grid-sorting-indicator-height: 8px;
 }
 
 .data-grid .highlight {
@@ -50,18 +54,23 @@
     left: 0;
     right: 0;
     overflow-x: hidden;
-    overflow-y: overlay;
+    overflow-y: scroll;
 }
 
 .data-grid.inline .data-container {
     position: static;
+    overflow-y: auto;
 }
 
 .data-grid.inline {
-    border: 1px solid hsl(0, 0%, 70%);
+    border: 1px solid var(--border-color);
 }
 
-.data-grid.no-header > table.header {
+.data-grid > .header-wrapper {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-grid.no-header > .header-wrapper {
     display: none;
 }
 
@@ -70,40 +79,31 @@
 }
 
 .data-grid th {
-    text-align: left;
+    height: var(--data-grid-header-height);
+    padding: 0;
+    text-align: start;
     vertical-align: middle;
-
-    background-color: white;
-
-    border-bottom: 1px solid hsl(0, 0%, 70%);
-
     font-weight: normal;
-
-    height: 22px;
-    padding: 0 6px;
-
     white-space: nowrap;
+    background-color: var(--background-color);
     overflow: hidden;
 }
 
-body.window-inactive .data-grid th {
-    border-bottom-color: hsl(0, 0%, 85%);
+.data-grid th > .header-cell-content {
+    margin: 3px 0;
+    padding: 0 var(--data-grid-header-horizontal-padding);
 }
 
-.data-grid :matches(th, td):not(:last-child) {
-    border-right: 1px solid hsl(0, 0%, 70%);
-}
-
-body.window-inactive .data-grid :matches(th, td):not(:last-child) {
-    border-right-color: hsl(0, 0%, 85%);
+.data-grid th:not(:last-child) > .header-cell-content {
+    border-inline-end: 1px solid var(--border-color);
 }
 
 .data-grid th.sortable:active {
-    background-color: hsl(0, 0%, 70%);
+    background-color: var(--background-color-pressed);
 }
 
-.data-grid th:matches(.sort-ascending, .sort-descending) {
-    background-color: hsl(0, 0%, 90%);
+.data-grid th:is(.sort-ascending, .sort-descending) {
+    font-weight: var(--sorted-header-font-weight);
 }
 
 .data-grid tr.filler {
@@ -117,16 +117,25 @@ body.window-inactive .data-grid :matches(th, td):not(:last-child) {
 }
 
 .data-grid table.data {
-    position: absolute;
+    position: relative;
     left: 0;
-    top: 0;
     right: 0;
-    bottom: 0;
     height: 100%;
     border-top: 0 none transparent;
-    background-image: linear-gradient(to bottom, white, white 50%, hsl(214, 41%, 96%) 50%, hsl(214, 41%, 96%));
-    background-size: 100% 42px;
     table-layout: fixed;
+}
+
+.data-grid:not(.variable-height-rows) table.data {
+    background-image: linear-gradient(to bottom, var(--odd-zebra-stripe-row-background-color), var(--odd-zebra-stripe-row-background-color) 50%, var(--even-zebra-stripe-row-background-color) 50%, var(--even-zebra-stripe-row-background-color));
+    background-size: 100% 40px;
+}
+
+.data-grid:not(.variable-height-rows) > .data-container > table.data > tbody > tr > td > .cell-content {
+    height: 16px;
+}
+
+.data-grid:not(.variable-height-rows) table.data.even-first-zebra-stripe {
+    background-image: linear-gradient(to bottom, var(--even-zebra-stripe-row-background-color), var(--even-zebra-stripe-row-background-color) 50%, var(--odd-zebra-stripe-row-background-color) 50%, var(--odd-zebra-stripe-row-background-color));
 }
 
 .data-grid.inline table.data {
@@ -141,24 +150,62 @@ body.window-inactive .data-grid :matches(th, td):not(:last-child) {
     display: table-row;
 }
 
+.data-grid.variable-height-rows table.data tr:nth-child(odd) {
+    background-color: var(--odd-zebra-stripe-row-background-color);
+}
+
+.data-grid.variable-height-rows table.data tr:nth-child(even) {
+    background-color: var(--even-zebra-stripe-row-background-color);
+}
+
+.data-grid.variable-height-rows.even-first-zebra-stripe table.data tr:nth-child(odd) {
+    background-color: var(--even-zebra-stripe-row-background-color);
+}
+
+.data-grid.variable-height-rows.even-first-zebra-stripe table.data tr:nth-child(even) {
+    background-color: var(--odd-zebra-stripe-row-background-color);
+}
+
+.data-grid.variable-height-rows table.data tr.filler {
+ /* FIXME: This should show an alternating stripe, but it needs to know if the last row is even or odd. */
+    background-color: var(--even-zebra-stripe-row-background-color);
+}
+
 .data-grid td {
     vertical-align: top;
-    height: 12px;
-    line-height: 17px;
+    height: 16px;
+    line-height: 16px;
     padding: 2px 6px;
     white-space: nowrap;
     overflow: hidden;
-    font-family: -apple-system-monospaced-numbers, sans-serif;
+    font-family: -webkit-system-font, sans-serif;
+    font-variant-numeric: tabular-nums;
 }
 
-.data-grid:matches(:focus, .force-focus) tr.selected td:not(:last-child) {
-    border-right-color: hsl(210, 100%, 40%);
+.data-grid td.spanning {
+    text-align: center;
+    color: hsl(0, 0%, 30%);
+    background-color: hsl(0, 0%, 95%);
+    pointer-events: none;
 }
 
-.data-grid :matches(th, td) > div {
+.data-grid:focus tr.selected td:not(:last-child) {
+    --border-end-color: hsla(0, 0%, var(--foreground-lightness), 0.05);
+}
+
+.data-grid:focus tr.selected td:not(:last-child) {
+    border-inline-end-color: var(--border-end-color);
+}
+
+.data-grid :is(th, td) > div {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+/* FIXME: Remove this once <https://webkit.org/b/169972> is fixed. */
+.data-grid td.editing > div {
+    text-overflow: clip;
 }
 
 .data-grid .centered div {
@@ -166,53 +213,37 @@ body.window-inactive .data-grid :matches(th, td):not(:last-child) {
 }
 
 .data-grid .right div {
-    text-align: right;
+    text-align: end;
 }
 
 .data-grid th.sortable div {
     position: relative;
 }
 
-.data-grid th:matches(.sort-ascending, .sort-descending) > div:first-child {
-    padding-right: 12px;
+.data-grid th:is(.sort-ascending, .sort-descending) > .header-cell-content:first-child {
+    padding-inline-end: calc(12px + var(--data-grid-header-horizontal-padding)); /* Add 12px for the sorting chevron. */
 }
 
-.data-grid th.sort-ascending > div:first-child::after {
+.data-grid th:is(.sort-ascending, .sort-descending) > .header-cell-content:first-child::after {
     position: absolute;
     top: 1px;
     bottom: 0;
-    right: 0;
-
+    inset-inline-end: var(--data-grid-header-horizontal-padding);
+    width: 9px;
+    height: var(--data-grid-sorting-indicator-height);
     margin-bottom: auto;
     margin-top: auto;
-
-    width: 9px;
-    height: 8px;
-
     content: "";
-
-    background-image: -webkit-canvas(data-grid-sort-indicator-up-arrow);
     background-size: 9px 8px;
     background-repeat: no-repeat;
 }
 
-.data-grid th.sort-descending > div:first-child::after {
-    position: absolute;
-    top: 1px;
-    bottom: 0;
-    right: 0;
+.data-grid th.sort-ascending > .header-cell-content:first-child::after {
+    background-image: url(../Images/SortIndicatorArrows.svg#up-arrow-normal);
+}
 
-    margin-bottom: auto;
-    margin-top: auto;
-
-    width: 9px;
-    height: 8px;
-
-    content: "";
-
-    background-image: -webkit-canvas(data-grid-sort-indicator-down-arrow);
-    background-size: 9px 8px;
-    background-repeat: no-repeat;
+.data-grid th.sort-descending > .header-cell-content:first-child::after {
+    background-image: url(../Images/SortIndicatorArrows.svg#down-arrow-normal);
 }
 
 .data-grid button {
@@ -220,45 +251,51 @@ body.window-inactive .data-grid :matches(th, td):not(:last-child) {
 }
 
 .data-grid tr.parent td.disclosure::before {
-    float: left;
-
+    width: 13px;
+    height: 100%;
     content: "";
-
-    background-image: -webkit-canvas(disclosure-triangle-tiny-closed-normal);
-    background-size: 8px 8px;
+    background-image: url(../Images/DisclosureTriangles.svg#closed-normal);
+    background-position-y: center;
+    background-size: 13px 13px;
     background-repeat: no-repeat;
+}
 
-    width: 8px;
-    height: 8px;
+body[dir=rtl] .data-grid tr.parent td.disclosure::before {
+    transform: scaleX(-1);
+}
 
-    margin-top: 2px;
-    margin-right: 2px;
+body[dir=ltr] .data-grid tr.parent td.disclosure::before {
+    float: left;
+}
+
+body[dir=rtl] .data-grid tr.parent td.disclosure::before {
+    float: right;
 }
 
 .data-grid tr.parent.expanded td.disclosure::before {
-    background-image: -webkit-canvas(disclosure-triangle-tiny-open-normal);
+    background-image: url(../Images/DisclosureTriangles.svg#open-normal);
 }
 
-.data-grid:matches(:focus, .force-focus) tr.parent.selected td.disclosure::before {
-    background-image: -webkit-canvas(disclosure-triangle-tiny-closed-selected);
+.data-grid:focus tr.parent.selected td.disclosure::before {
+    background-image: url(../Images/DisclosureTriangles.svg#closed-selected);
 }
 
-.data-grid:matches(:focus, .force-focus) tr.parent.expanded.selected td.disclosure::before {
-    background-image: -webkit-canvas(disclosure-triangle-tiny-open-selected);
+.data-grid:focus tr.parent.expanded.selected td.disclosure::before {
+    background-image: url(../Images/DisclosureTriangles.svg#open-selected);
 }
 
 .data-grid tr.selected {
-    background-color: hsl(0, 0%, 83%) !important;
+    background-color: var(--selected-background-color-unfocused) !important;
     color: inherit !important;
 }
 
-.data-grid:matches(:focus, .force-focus) tr.selected {
-    background-color: hsl(209, 100%, 49%) !important;
-    color: white !important;
+.data-grid:focus tr.selected {
+    background-color: var(--selected-background-color) !important;
+    color: var(--selected-foreground-color) !important;
 }
 
 .data-grid tr:not(.parent) td.disclosure {
-    text-indent: 10px;
+    text-indent: 13px;
 }
 
 .data-grid td .subtitle {
@@ -266,15 +303,15 @@ body.window-inactive .data-grid :matches(th, td):not(:last-child) {
 }
 
 .data-grid td .subtitle::before {
-    content: " — ";
+    content: "\00A0\2014\00A0"; /* &nbsp;&mdash;&nbsp; */;
 }
 
-.data-grid:matches(:focus, .force-focus) tr.selected td .subtitle {
+.data-grid:focus tr.selected td .subtitle {
     color: hsla(0, 0%, 100%, 0.9);
 }
 
 .data-grid td.error {
-    color: hsl(0, 86%, 47%);
+    color: var(--error-text-color);
 }
 
 .data-grid tr.selected td.error {
@@ -283,26 +320,76 @@ body.window-inactive .data-grid :matches(th, td):not(:last-child) {
 
 .data-grid td .icon {
     display: inline-block;
-    vertical-align: top;
-
     width: 16px;
     height: 16px;
-
-    margin-right: 2px;
+    margin-inline-end: 2px;
+    vertical-align: top;
 }
 
 .data-grid td .go-to-arrow {
-    float: right;
-
     display: none;
-
-    margin-left: 2px;
+    margin-inline-start: 2px;
 }
 
-.data-grid tr:matches(.selected, :hover) .go-to-arrow {
+body[dir=ltr] .data-grid td .go-to-arrow {
+    float: right;
+}
+
+body[dir=rtl] .data-grid td .go-to-arrow {
+    float: left;
+}
+
+.data-grid tr:is(.selected, :hover) .go-to-arrow {
     display: block;
 }
 
 .data-grid .resizer {
-    z-index: 500;
+    z-index: var(--z-index-resizer);
+
+    --data-grid-resizer-translateX: -2.5px;
+}
+
+body[dir=ltr] .data-grid .resizer {
+    transform: translateX(var(--data-grid-resizer-translateX));
+}
+
+body[dir=rtl] .data-grid .resizer {
+    transform: translateX(calc(-1 * var(--data-grid-resizer-translateX)));
+}
+
+.data-grid tr.editable .cell-content > input {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+body:not(.window-inactive, .window-docked-inactive) .data-grid:focus tr.editable.selected .cell-content > input {
+    color: var(--selected-foreground-color);
+}
+
+@media (prefers-color-scheme: dark) {
+    .data-grid td .subtitle {
+        color: var(--selected-secondary-text-color);
+    }
+
+    .data-grid:focus tr.selected td .subtitle {
+        color: hsla(0, 0%, var(--foreground-lightness), 0.9);
+    }
+
+    .data-grid tr.editable .cell-content > input {
+        color: inherit;
+    }
+
+    .data-grid td.spanning {
+        color: var(--text-color-secondary);
+        background-color: unset;
+    }
+
+    .data-grid th:is(.sort-ascending, .sort-descending) > .header-cell-content:first-child::after {
+        filter: invert();
+    }
 }

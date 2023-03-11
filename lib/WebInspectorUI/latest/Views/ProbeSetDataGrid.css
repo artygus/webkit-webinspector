@@ -59,7 +59,7 @@
     border-bottom: 2px solid hsl(0, 0%, 40%);
 }
 
-.details-section.probe-set .data-grid > tr.data-updated {
+.details-section.probe-set .data-grid tr.data-updated {
     animation-duration: 0.3s;
     animation-name: blink-probe-frame;
 }
@@ -86,7 +86,7 @@
     left: -6px;
 }
 
-.details-section.probe-set .data-grid .object-tree > :matches(.title, .object-preview)::before {
+.details-section.probe-set .data-grid .object-tree > :is(.title, .object-preview)::before {
  /* The line-height inside a data-grid is 17px instead of 13px, this will center vertically on the top line. */
     top: 2px;
 }

@@ -44,7 +44,7 @@
     left: 0;
 }
 
-.hover-menu > svg > :matches(path, rect) {
+.hover-menu > svg > :is(path, rect) {
     stroke: hsla(0, 0%, 0%, 0.22);
     stroke-width: 2px;
     fill: none;
@@ -58,10 +58,16 @@
     width: 15px;
     height: 13px;
 
-    content: -webkit-image-set(url(../Images/HoverMenuButton.png) 1x, url(../Images/HoverMenuButton@2x.png) 2x);
+    content: image-set(url(../Images/HoverMenuButton.png) 1x, url(../Images/HoverMenuButton@2x.png) 2x);
     transform: translateY(-1px);
 }
 
 .hover-menu.visible > img {
     pointer-events: all;
+}
+
+@media (prefers-color-scheme: dark) {
+    .hover-menu > svg > :is(path, rect) {
+        stroke: hsla(0, 0%, 100%, 0.3);
+    }
 }

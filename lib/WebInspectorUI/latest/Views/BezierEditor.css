@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Apple Inc. All rights reserved.
+ * Copyright (C) 2015-2020 Apple Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -25,39 +25,43 @@
 
 .bezier-editor {
     width: 200px;
-    height: 225px;
+    height: 258px;
+
+    --bezier-editor-preview-translateX: 170px;
 }
 
 .bezier-editor > .bezier-preview {
     width: calc(100% - 10px);
     height: 25px;
     margin: 5px 5px 0;
-    border-bottom: 1px solid lightgrey;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .bezier-editor > .bezier-preview > div {
     width: 20px;
     height: 20px;
-    background-color: hsl(212, 92%, 54%);
+    background-color: var(--glyph-color-active);
     border-radius: 50%;
 }
 
 .bezier-editor > .bezier-preview-timing {
     position: absolute;
     top: 34px;
-    margin-left: 11px;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 4px solid black;
+    margin-inline-start: 11px;
+    border-inline: 4px solid transparent;
+    border-top: 4px solid var(--text-color);
 }
 
+.bezier-editor > .bezier-preview.animate > div,
 .bezier-editor > .bezier-preview-timing.animate {
-    animation: bezierPreview 2s linear 250ms forwards;
+    animation: bezierPreview 2.5s linear 250ms infinite;
 }
 
 @keyframes bezierPreview {
-    from { transform: translate(0, 0); }
-    to { transform: translate(170px, 0); }
+    from { transform: translateX(0); }
+    10% { transform: translateX(0); }
+    90% { transform: translateX(var(--bezier-editor-preview-translateX)); }
+    to { transform: translateX(var(--bezier-editor-preview-translateX)); }
 }
 
 .bezier-editor > .bezier-container {
@@ -66,30 +70,45 @@
 
 .bezier-editor > .bezier-container .linear-curve {
     fill: none;
-    stroke:lightgrey;
+    stroke: var(--text-color-quaternary);
     stroke-width: 2;
     stroke-linecap: round;
 }
 
 .bezier-editor > .bezier-container .bezier-curve {
     fill: none;
-    stroke: black;
+    stroke: var(--text-color);
     stroke-width: 2;
     stroke-linecap: round;
 }
 
 .bezier-editor > .bezier-container .control-line {
     fill: none;
-    stroke: hsl(210, 100%, 49%);
+    stroke: var(--glyph-color-active);
     stroke-width: 2;
     stroke-linecap: round;
 }
 
 .bezier-editor > .bezier-container .control-handle {
     r: 5px;
-    fill: hsl(210, 100%, 49%);
+    fill: var(--glyph-color-active);
 }
 
 .bezier-editor > .bezier-container .control-handle.selected {
     r: 7px;
+}
+
+.bezier-editor > .number-input-container {
+    display: flex;
+    width: calc(100% - 10px);
+    margin: 0 5px;
+    padding-top: 7px;
+    border-top: 1px solid var(--border-color);
+}
+
+.bezier-editor > .number-input-container > input {
+    width: 100%;
+    margin: 0 2px;
+    padding: 1px 0 1px;
+    text-align: end;
 }

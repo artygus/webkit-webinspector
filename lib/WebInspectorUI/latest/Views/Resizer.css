@@ -25,7 +25,8 @@
 
 .resizer {
     position: absolute;
-    z-index: 1000;
+    z-index: var(--z-index-resizer);
+    pointer-events: all;
 }
 
 .resizer.vertical-rule {
@@ -52,5 +53,5 @@
     right: 0;
 
     opacity: 0;
-    z-index: 1;
+    z-index: var(--z-index-glass-pane-for-drag);
 }

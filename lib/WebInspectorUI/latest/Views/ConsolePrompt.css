@@ -24,7 +24,7 @@
  */
 
 .console-prompt {
-    background-color: white;
+    background-color: var(--background-color-content);
 }
 
 .console-prompt > .CodeMirror {

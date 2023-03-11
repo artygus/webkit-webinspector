@@ -27,10 +27,12 @@
     position: absolute;
     display: block;
 
+    text-align: left;
+
     background-color: hsla(0, 0%, 100%, 0.9);
     border-radius: 5px;
 
-    z-index: 100;
+    z-index: var(--z-index-tooltip);
 
     margin-top: -1px;
     margin-left: -10px;
@@ -65,14 +67,21 @@
     overflow: hidden;
     text-overflow: ellipsis;
 
-    color: black;
+    color: var(--text-color);
+}
+
+.completion-suggestions-container > .item > .matched {
+    font-weight: bold;
 }
 
 .completion-suggestions-container:not(:active) > .item.selected,
 .completion-suggestions-container > .item:active {
-    box-shadow: inset hsl(207, 54%, 57%) 0 1px 0;
-    background: linear-gradient(to bottom, hsl(207, 57%, 63%), hsl(207, 66%, 42%));
-
+    background-color: var(--selected-background-color);
     color: white;
-    text-shadow: hsl(209, 41%, 34%) 0 1px 0;
+}
+
+@media (prefers-color-scheme: dark) {
+    .completion-suggestions {
+        background-color: var(--overlay-background);
+    }
 }

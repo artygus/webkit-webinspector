@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Apple Inc. All rights reserved.
+ * Copyright (C) 2015-2020 Apple Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -25,15 +25,13 @@
 
 .object-tree {
     position: relative;
-
     display: inline-block;
-
-    color: black;
+    color: var(--text-color);
     font-family: Menlo, monospace;
     font-size: 11px;
 }
 
-.object-tree > :matches(.title, .object-preview)::before {
+.object-tree > :is(.title, .object-preview)::before {
     display: inline-block;
 
     vertical-align: baseline;
@@ -43,7 +41,7 @@
     width: 13px;
     height: 13px;
 
-    background-image: -webkit-canvas(navigation-sidebar-panel-disclosure-triangle-closed-normal);
+    background-image: url(../Images/DisclosureTriangles.svg#closed-normal);
     background-size: 13px 13px;
     background-repeat: no-repeat;
     background-position: center;
@@ -51,15 +49,15 @@
     content: "";
 }
 
-.object-tree:not(.lossless-preview) > :matches(.title, .object-preview) {
+.object-tree:not(.lossless-preview) > :is(.title, .object-preview) {
     margin-left: 0;
 }
 
-.object-tree.expanded > :matches(.title, .object-preview)::before {
-    background-image: -webkit-canvas(navigation-sidebar-panel-disclosure-triangle-open-normal);
+.object-tree.expanded > :is(.title, .object-preview)::before {
+    background-image: url(../Images/DisclosureTriangles.svg#open-normal);
 }
 
-.object-tree.properties-only > :matches(.title, .object-preview) {
+.object-tree.properties-only > :is(.title, .object-preview) {
     display: none;
 }
 
@@ -67,20 +65,24 @@
     font-style: normal;
 }
 
-.object-tree.lossless-preview > :matches(.title, .object-preview)::before {
+.object-tree.expanded > .title {
+    line-height: 16px;
+}
+
+.object-tree.lossless-preview > :is(.title, .object-preview)::before {
     background: none;
     width: 0px;
 }
 
-.object-tree .object-tree-outline {
+.object-tree .tree-outline.object {
     display: none;
 }
 
-.object-tree.expanded > .object-tree-outline {
+.object-tree.expanded > .tree-outline.object {
     display: block;
 }
 
-.object-tree-outline {
+.tree-outline.object {
     margin: 0;
     padding: 0 6px 2px;
     list-style: none;
@@ -88,7 +90,12 @@
     outline: none;
 }
 
-.object-tree.properties-only .object-tree-outline {
+.object-tree .tree-outline.object.compact {
+    margin-top: 1px;
+}
+
+.tree-outline.object .item,
+.object-tree.properties-only .tree-outline.object {
     padding-left: 0;
 }
 
@@ -96,7 +103,12 @@
     opacity: 1;
 }
 
-.object-tree-outline li {
+.object-tree.properties-only.json-only .object-tree-property.prototype-property,
+.object-tree.properties-only.json-only .object-tree-property.prototype-property + .children {
+    display: none;
+}
+
+.tree-outline.object li {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -104,24 +116,26 @@
     cursor: default;
 }
 
-.object-tree-outline ol {
+.tree-outline.object ol {
     display: none;
     margin: 0;
-    -webkit-padding-start: 16px;
+    padding-inline-start: 16px;
     list-style: none;
 }
 
-.object-tree-outline ol.expanded {
+.tree-outline.object ol.expanded {
     display: block;
 }
 
-.object-tree-outline li .empty-message {
+.tree-outline.object li .empty-message {
     color: hsl(0, 0%, 60%);
     margin-left: 15px;
-    font-family: -apple-system, sans-serif;
+    font-family: -webkit-system-font, sans-serif;
     font-size: 12px;
 }
 
-.object-tree-property :matches(.formatted-string, .formatted-regexp) {
-    white-space: nowrap;
+.tree-outline.object li > button[disabled] + .indeterminate-progress-spinner {
+    display: inline-block;
+    margin-inline-start: 2px;
+    vertical-align: -4px;
 }

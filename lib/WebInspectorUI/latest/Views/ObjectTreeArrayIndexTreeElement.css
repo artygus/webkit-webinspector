@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Apple Inc. All rights reserved.
+ * Copyright (C) 2015-2020 Apple Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -23,36 +23,35 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.object-tree-array-index {
+.tree-outline .item.object-tree-array-index {
     position: relative;
     left: -12px;
     margin-top: 2px;
     margin-bottom: 1px;
 }
 
-.object-tree .object-tree-array-index > .disclosure-button,
 .object-tree .object-tree-array-index > .icon {
     display: none;
 }
 
 .object-tree-array-index .index-name {
-    font-family: -apple-system-monospaced-numbers, sans-serif;
+    font-family: -webkit-system-font, sans-serif;
     font-size: 11px;
+    font-variant-numeric: tabular-nums;
     vertical-align: top;
-    color: hsla(0, 0%, 0%, 0.33);
+    color: var(--console-secondary-text-color);
 
     position:relative;
     top: -1px;
 
     display: inline-block;
     width: 30px;
-    margin-right: 7px;
     text-align: right;
 }
 
 /* An array inside an array we should reduce the padding-start. */
-.object-tree-array-index .index-value .object-tree .object-tree-outline {
-    -webkit-padding-start: 6px;
+.object-tree-array-index .index-value .object-tree .tree-outline.object {
+    padding-inline-start: 6px;
 }
 
 /* An array inside an ObjectTreePropertyTreeElement needs more left shift */
@@ -61,6 +60,6 @@
 }
 
 /* A node inside an array we should reduce the padding-start. */
-.object-tree-array-index .index-value .formatted-node .dom-tree-outline {
-    -webkit-padding-start: 0px;
+.object-tree-array-index .index-value .formatted-node .tree-outline.dom {
+    padding-inline-start: 0px;
 }

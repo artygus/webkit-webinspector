@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Apple Inc. All rights reserved.
+ * Copyright (C) 2013-2020 Apple Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -24,7 +24,7 @@
  */
 
 .sidebar > .panel.details.layer-tree > .content {
-    bottom: 28px;
+    bottom: var(--console-prompt-min-height);
 }
 
 .panel.details.layer-tree .data-grid {
@@ -34,22 +34,22 @@
 }
 
 .panel.details.layer-tree .name-column .icon {
-    content: url(../Images/DOMElement.svg);
+    content: url(../Images/TypeIcons.svg#DOMElement-light);
 }
 
 .panel.details.layer-tree tr.reflection .name-column .icon {
-    content: url(../Images/Reflection.svg);
+    content: url(../Images/TypeIcons.svg#Reflection-light);
 }
 
 .panel.details.layer-tree tr.pseudo-element .name-column .icon {
-    content: url(../Images/PseudoElement.svg);
+    content: url(../Images/TypeIcons.svg#PseudoElement-light);
 }
 
-.panel.details.layer-tree .name-column :matches(.pseudo-element, .reflection) {
+.panel.details.layer-tree .name-column :is(.pseudo-element, .reflection) {
     color: hsl(0, 0%, 50%);
 }
 
-.panel.details.layer-tree tr.selected .name-column :matches(.pseudo-element, .reflection) {
+.panel.details.layer-tree tr.selected .name-column :is(.pseudo-element, .reflection) {
     color: hsla(0, 0%, 100%, 0.75);
 }
 
@@ -57,9 +57,9 @@
     position: absolute;
     display: flex;
     bottom: 0;
+    height: var(--console-prompt-min-height);
     width: 100%;
-    border-top: 1px solid hsl(0, 0%, 70%);
-    background-color: white;
+    border-top: 1px solid var(--border-color);
 }
 
 .panel.details.layer-tree .bottom-bar > div {
@@ -80,19 +80,38 @@
 }
 
 .layer-tree-popover {
+    max-width: 300px;
     padding: 5px;
 }
 
 .layer-tree-popover p {
     margin: 0;
+    font-size: 1.1em;
+    font-weight: bold;
 }
 
 .layer-tree-popover ul {
-    list-style-type: none;
-    margin: 10px 0 0 0;
-    padding-left: 10px;
+    margin: 10px 0 0;
+    padding: 0;
+
+    margin-inline-start: 1em;
+    padding-inline-start: 1em;
 }
 
 .layer-tree-popover li {
     line-height: 1.3em;
+}
+
+@media (prefers-color-scheme: dark) {
+    .panel.details.layer-tree .name-column .icon {
+        content: url(../Images/TypeIcons.svg#DOMElement-dark);
+    }
+
+    .panel.details.layer-tree tr.reflection .name-column .icon {
+        content: url(../Images/TypeIcons.svg#Reflection-dark);
+    }
+
+    .panel.details.layer-tree tr.pseudo-element .name-column .icon {
+        content: url(../Images/TypeIcons.svg#PseudoElement-dark);
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013, 2014 Apple Inc. All rights reserved.
+ * Copyright (C) 2013-2020 Apple Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -23,60 +23,47 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+.item.breakpoint .status {
+    position: relative;
+}
+
 .item.breakpoint .status > .status-image {
-    width: 21px;
+    width: 23px;
     height: 12px;
-    content: url(../Images/BreakpointInactiveButton.svg);
-    margin-top: 3px;
+    margin-top: 2px;
+
+    fill: var(--breakpoint-color);
+    stroke: hsla(0, 0%, 10%, 0.3);
 }
 
-.item.breakpoint .status > .status-image.resolved {
-    content: url(../Images/BreakpointButton.svg);
-}
-
-.item.breakpoint .status > .status-image.auto-continue {
-    opacity: 0.6;
+.item.breakpoint .status > .status-image.auto-continue::after {
+    position: absolute;
+    right: 3px;
+    width: 3px;
+    height: 12px;
+    content: "";
+    clip-path: polygon(0 20%, 100% 50%, 0 80%);
+    background-color: var(--selected-foreground-color);
 }
 
 .item.breakpoint .status > .status-image.disabled {
-    opacity: 0.35;
+    fill: var(--breakpoint-color-disabled);
 }
 
-.item.breakpoint .subtitle.formatted-location {
-    font-style: italic;
+.item.breakpoint .status > .status-image:not(.resolved) {
+    filter: grayscale();
 }
 
-.breakpoint-exception-icon .icon {
-    content: url(../Images/Exception.svg);
+body:not(.window-inactive, .window-docked-inactive) .tree-outline:focus-within .item.breakpoint.selected .status > .status-image.resolved {
+    stroke: var(--selected-foreground-color);
 }
 
-.breakpoint-paused-icon .icon {
-    content: url(../Images/PausedBreakpoint.svg);
+.item.breakpoint.paused .icon {
+    content: url(../Images/TypeIcons.svg#PausedBreakpoint-light);
 }
 
-/* When animating a layer on top of a tree element's icon, move the main
-icon to the icon element's background so animations are layered on top. */
-.breakpoint-generic-line-icon .icon {
-    background-image: url(../Images/ResultLine.svg);
-    content: '';
-}
-
-.breakpoint-generic-line-icon .icon > span {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    border-radius: 50%;
-    transform: scale(0);
-    transition: none;
-    background-color: hsl(216, 30%, 42%);
-}
-
-.data-updated.breakpoint-generic-line-icon .icon > span {
-    border-radius: 0;
-    transform: scale(0.85);
-    transition: all .4s ease-out;
-    background-color: hsla(216, 30%, 42%, 0.1);
+@media (prefers-color-scheme: dark) {
+    .item.breakpoint.paused .icon {
+        content: url(../Images/TypeIcons.svg#PausedBreakpoint-dark);
+    }
 }

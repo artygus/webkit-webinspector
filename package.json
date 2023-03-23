@@ -1,6 +1,6 @@
 {
   "name": "webkit-webinspector",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Standalone Webkit WebInspector frontend extracted from Webkit sources",
   "main": "server.js",
   "dependencies": {
